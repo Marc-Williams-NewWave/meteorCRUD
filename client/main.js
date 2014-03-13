@@ -6,8 +6,7 @@ Router.map(function() {
   this.route('home', {path: '/'});
   this.route('userTable');
   this.route('userBio', {template: 'userBio'});
-  this.route('profilePage', {
-  	path: '/userTable/:_id'});
+  this.route('profilePage', {path: '/userTable/:_id'});
 })
 
 Session.setDefault('updating_user', null);
@@ -42,14 +41,6 @@ Session.setDefault('updating_user', null);
 			var lName = $('#lastName').val();
 			var accBalance = accounting.formatColumn([$('#accountBalance').val()], "$ ");
 			var bio = $('#userBio').val();
-
-	// Testing if values are obtained properly
-			console.log("inserting users.");
-			console.log("fName -> " + fName);
-			console.log("lName -> " + lName);
-			console.log("accBalance -> " + accBalance);
-			console.log("bio -> " + bio);
-			console.log("info -> " + info);
 
 			if(Session.get('updating_user')){
 				updateUser(Session.get('updating_user'),fName, lName, accBalance, bio, "");

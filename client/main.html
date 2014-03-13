@@ -149,7 +149,13 @@
 </template>
 
 <template name="mailer">
-	<textarea></textarea>
+	
+		To: <input type="text" id="toField"><br>
+		From: <input type="text" id="fromField"><br>
+		Subject: <input type="text" id="subjectField"><br>
+		Message: <textarea id="messageBox"></textarea><br>
+		<input type="submit" id="sendMessage" value="Send">
+	
 </template>
 
 
