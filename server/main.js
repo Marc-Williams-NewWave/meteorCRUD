@@ -2,6 +2,13 @@ Meteor.publish('users', function() {
     return Users.find({});
 });
 
+Meteor.publish('listUserFiles', function(filter){
+	return ContactsFS.find({complete: filter.completed}), {
+		sort: {handledAt: 1},
+		fields: {_id: 1, fileName: 1, handledAt: 1},
+		limit: filter.limit
+	})
+});
 Meteor.startup(function(){
 	Apm.connect('CjwQdohh83iq9dtWc', '2cfdc412-531b-490b-bb13-99befa9ab7fe');
 	Meteor.Mailgun.config({

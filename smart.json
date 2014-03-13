@@ -5,6 +5,7 @@
     "apm": {},
     "mysql": {},
     "connection-banner": {},
-    "mailgun": {}
+    "mailgun": {},
+    "collectionFS": {}
   }
 }

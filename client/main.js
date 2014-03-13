@@ -1,5 +1,5 @@
 Meteor.subscribe("users");
-
+ContactsFS = new CollectionFS('users', {autopublish: false});
 if (Meteor.isClient) {
 
 Router.map(function() {
@@ -10,7 +10,12 @@ Router.map(function() {
 })
 
 Session.setDefault('updating_user', null);
+Session.setDefault('myFilter', {completed: true, limit: 30});
 
+Deps.autorun(function(){
+	var filter = Session.get('myFilter');
+	Meteor.subscribe('listUserFiles', filter);
+})
 	Template.userTable.users = function () {
 		return Users.find({});
 	}

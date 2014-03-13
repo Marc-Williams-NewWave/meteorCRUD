@@ -7,7 +7,8 @@
       "apm": {},
       "mysql": {},
       "connection-banner": {},
-      "mailgun": {}
+      "mailgun": {},
+      "collectionFS": {}
     },
     "packages": {
       "iron-router": {
@@ -39,6 +40,16 @@
         "git": "https://github.com/cunneen/meteor-mailgun.git",
         "tag": "v0.9.1",
         "commit": "5ebfa17d4dadc4ae4b3784903d6bc252d09126e2"
+      },
+      "collectionFS": {
+        "git": "https://github.com/raix/Meteor-CollectionFS.git",
+        "tag": "v0.3.7",
+        "commit": "34d9fb363472e44c6dba4a1473a9e106e107f5a9"
+      },
+      "cfs-public-folder": {
+        "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",
+        "tag": "v0.0.3",
+        "commit": "581c716424b374efb6f611110002621f9cc9212b"
       }
     }
   }

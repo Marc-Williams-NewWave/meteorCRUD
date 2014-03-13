@@ -15,3 +15,5 @@ email
 mysql
 connection-banner
 mailgun
+collectionFS
+cfs-public-folder
