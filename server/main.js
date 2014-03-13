@@ -35,5 +35,4 @@ Meteor.startup(function(){
 			});
 			console.log("Email Sent!");
 		} 
-
 	});

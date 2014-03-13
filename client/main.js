@@ -35,6 +35,10 @@ Session.setDefault('updating_user', null);
 		return Users.findOne({_id: Session.get('updating_user')});
 	}
 
+	Template.mailer.user = function(){
+		return Users.findOne({_id: Session.get('updating_user')});
+	}
+
 	Template.userTable.events({
 		'click #saveBtn': function(){
 			var fName = $('#firstName').val();
@@ -154,6 +158,18 @@ Template.nameSpace.events({
 			e.preventDefault();
 		}
 	});
+
+	Template.mailer.events({
+		'click #sendMessage' : function(){
+			var user = Users.findOne({_id: this._id});
+			var to = $('#toField').val();
+			var from = user.firstName + "." + user.lastName + "@mailAddress.com"
+			var subject = $('#subjectField').val();
+			var text = $('#messageBox')[0].value;
+			
+			Meteor.call('sendEmail', to, from, subject, text);
+		}
+	})
 
 	var generateTemplate = function(templateName){
 		var fragment = Meteor.render(function() {
