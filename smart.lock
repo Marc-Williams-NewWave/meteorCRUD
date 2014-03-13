@@ -1,0 +1,45 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "iron-router": {},
+      "accounting": {},
+      "apm": {},
+      "mysql": {},
+      "connection-banner": {},
+      "mailgun": {}
+    },
+    "packages": {
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.6.4",
+        "commit": "927bbaed1b87894fb6fb70807f74ff3a5bd89f29"
+      },
+      "accounting": {
+        "git": "https://github.com/IainShigeoka/meteor-accounting.git",
+        "tag": "v0.3.2.3",
+        "commit": "330cf532e6ac7282cf85ef3b83a54c1a25f5bdae"
+      },
+      "apm": {
+        "git": "https://github.com/arunoda/meteor-apm-client.git",
+        "tag": "v0.2.13",
+        "commit": "f9e77e1ca6a7ccab5a4f3a7b5c8295296906cf35"
+      },
+      "mysql": {
+        "git": "https://github.com/patrickocoffeyo/meteor-mysql.git",
+        "tag": "v0.0.1",
+        "commit": "ba1ff6d386082a478f14ab2708d6d4b7fa6c6fac"
+      },
+      "connection-banner": {
+        "git": "https://github.com/nate-strauser/meteor-connection-banner.git",
+        "tag": "v0.2.1",
+        "commit": "aeb866f75e626262a97e9c913ac7dd5425e5c118"
+      },
+      "mailgun": {
+        "git": "https://github.com/cunneen/meteor-mailgun.git",
+        "tag": "v0.9.1",
+        "commit": "5ebfa17d4dadc4ae4b3784903d6bc252d09126e2"
+      }
+    }
+  }
+}

@@ -1,0 +1,155 @@
+<head>
+  <title>CRUD OPs</title>
+</head>
+
+<template name="home">
+
+
+  <h2 class="h2">Spring Data and MongoDB Collaboration</h2>
+	<p>
+		Click <a href="{{ pathFor 'userTable'}}" id="tableLink"> here</a> to try out Person CRUD with MongoDB. You can also click <a href="{{ pathFor 'userTable'}}" id="removeAll">here</a> if you wish to start with a fresh collection.
+	</p>
+</template>
+
+<template name='userTable'>
+	<div align="center">
+		<h2>Here is a simple CRUD using Meteor and MongoDB</h2>
+		<button align="center" id="cleanSlate">Clean Slate</button>
+		<button align="center" id="goHome">Landing Page</button>
+	</div>
+
+	<form  class="form-inline">
+		<input type="hidden" name="id"> 
+
+		<label for="firstName">First Name</label> 
+		<input type=text id="firstName" name="firstName" height="15"> 
+		
+		<label for="lastName">Last Name</label>
+		<input type="text" id="lastName" name="lastName">		
+		
+		<label for="accountBalance">Account Balance $</label>
+		<input type="text" id="accountBalance" name="accountBalance">	
+		
+		<label for="userBio">User Bio</label>
+		<input type="text" id="userBio" name="userBio">		
+		
+		<input type=submit class='save' id="saveBtn" value="Submit">
+	</form>
+
+	<table class="table table-striped table-bordered table-hover" style="width: 70% !important;" align="center">
+		<thead>
+			<tr>
+				<th>User ID</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Account Balance</th>
+				<th>User Profile</th>
+				<th>Delete User</th>
+				<th>Update</th>
+			</tr>
+		</thead>
+
+		<!-- iterate through collection populating table -->
+		{{#each users}}
+		<tr>
+		<td id="id_{{_id}}">
+			{{_id}}
+		</td>
+			<td id="firstName_{{firstName}}">
+				{{firstName}}
+			</td>
+			<td id="lastName">
+				{{lastName}}
+			</td>
+			<td id="accountBalance">
+				{{accountBalance}}
+			</td>
+			<td>
+				<button id="viewUserBio_{{firstName}}" class="viewBioPage">Profile</button>
+			</td>
+			<td>
+				<button id="deleteUser_{{firstName}}" class="deleteUser">Delete</button>
+			</td>
+			<td>
+				<button id="updateUser_{{firstName}}" class="updateUser">Update</button>
+			</td>
+		</tr>
+		{{/each }}
+		</table> 
+</template>
+
+<template name="profilePage">
+{{#with oneGuy}}
+<title>Welcome to {{firstName}}'s Bio</title>
+<table width="500px" class="table table-striped table-bordered">
+	<tr>
+		<td colspan="2" style="background-color:lightblue;">
+		<h1>User {{_id}}</h1>
+		</td>
+	</tr>
+
+	<tr>
+		<td style="background-color:slightgray;width:20%;">
+			Menu<br>
+			<a id="displayName"> Name</a><br>
+			<a id="displayBalance"> Account Balance</a><br>
+			<a id="displayBiography"> User Biography</a><br>
+			<a id="displayEmail"> Email</a>
+			<br><br><br><br><br><br>
+			<a id="tablePage" href="{{ pathFor 'userTable'}}"> Home</a>
+		</td>
+		
+		<td id="displayArea" style="background-color:#eeeeee; height: 200px; width: 280px;">
+		Navigate the side panel to execute some additional user actions.
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan="2" style="background-color:lightblue;text-align:center;"></td>
+	</tr>
+</table>
+{{/with}}
+</template>
+
+<template name="nameSpace">
+	{{#with oneGuy}}
+
+	<p>{{firstName}} {{lastName}}</p>
+	<p>Click here to show more information about {{firstName}}</p> 
+	<button id="moreBtn">More</button>
+	
+	<div id="moreInfoSection" style="display: none;">
+			<form id="infoForm">
+				<textarea id="addInfo">{{moreInfo}}</textarea>
+				<input type="submit" id="infoSaveBtn" value="Submit">
+			<form>
+	</div>
+
+	{{/with}}
+</template>
+
+<template name="additionalInfo">
+	<textarea id="addInfo"></textarea>
+</template>
+
+<template name="bankTeller">
+	{{#with oneGuy}}
+	<p>The user has an account balance of: {{accountBalance}}</p>
+	
+	<button id="showATM">ATM</button>
+
+	<div id="displayButtons" style="display: none;">
+		<form>
+			<input type="text" id="amount"><br>
+			<input type="submit" id="depositAmount" value="Deposit">
+			<input type="submit" id="withdrawAmount" value="Withdraw">
+		</form> 	
+	</div>
+	{{/with}}
+</template>
+
+<template name="mailer">
+	<textarea></textarea>
+</template>
+
+

@@ -1,0 +1,10 @@
+{
+  "packages": {
+    "iron-router": {},
+    "accounting": {},
+    "apm": {},
+    "mysql": {},
+    "connection-banner": {},
+    "mailgun": {}
+  }
+}
