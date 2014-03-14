@@ -1,5 +1,5 @@
 Meteor.subscribe("users");
-ContactsFS = new CollectionFS('users', {autopublish: false});
+
 if (Meteor.isClient) {
 
 Router.map(function() {
