@@ -3,8 +3,9 @@
     "iron-router": {},
     "accounting": {},
     "apm": {},
-    "mysql": {},
     "connection-banner": {},
-    "mailgun": {}
+    "mailgun": {},
+    "collectionFS": {},
+    "npm": {},
   }
 }

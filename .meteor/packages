@@ -5,13 +5,14 @@
 
 standard-app-packages
 insecure
-preserve-inputs
 iron-router
 bootstrap
 jquery
 accounting
 apm
 email
-mysql
 connection-banner
 mailgun
+collectionFS
+cfs-public-folder
+npm
