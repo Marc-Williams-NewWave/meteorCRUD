@@ -10,13 +10,14 @@ Router.map(function() {
 })
 
 Session.setDefault('updating_user', null);
-Session.setDefault('myFilter', {completed: true, limit: 30});
+// Session.setDefault('myFilter', {completed: true, limit: 30});
 
-Deps.autorun(function(){
-	var filter = Session.get('myFilter');
-	Meteor.subscribe('listUserFiles', filter);
-})
+// Deps.autorun(function(){
+// 	var filter = Session.get('myFilter');
+// 	Meteor.subscribe('listUserFiles', filter);
+// })
 	Template.userTable.users = function () {
+		// listOfUsers = Meteor.call('returnAllUsers');
 		return Users.find({});
 	}
 
@@ -45,17 +46,24 @@ Deps.autorun(function(){
 	}
 
 	Template.userTable.events({
-		'click #saveBtn': function(){
+		'click #saveBtn': function(e){
 			var fName = $('#firstName').val();
 			var lName = $('#lastName').val();
 			var accBalance = accounting.formatColumn([$('#accountBalance').val()], "$ ");
 			var bio = $('#userBio').val();
+			e.preventDefault();
 
 			if(Session.get('updating_user')){
 				updateUser(Session.get('updating_user'),fName, lName, accBalance, bio, "");
 			} else {
 				insertUser(fName, lName, accBalance, bio, "");				
 			}
+
+			$('#firstName').val('');
+			$('#lastName').val('');
+			$('#accountBalance').val('')
+			$('#userBio').val('');
+
 			Session.set('updating_user', null);
 		} ,
 
@@ -65,7 +73,9 @@ Deps.autorun(function(){
 
 		'click .deleteUser': function(){
 			if(confirm('Are you sure you want to remove this user?')){
+				var user = Users.findOne({_id:this._id});
 				Users.remove(this._id);
+				Meteor.call('deleteUser', user.firstName, user.lastName);
 			}
 		} ,
 		
@@ -87,7 +97,18 @@ Deps.autorun(function(){
 
 		'click #goHome' : function(){
 			Router.go('home');
-		} 
+		} , 
+
+		'click #offlineMode' : function(){
+			if(confirm('Are you sure you want to disconnect from Meteor server? This will cease live updates')){
+				Meteor.disconnect();
+			}
+		} ,
+
+		'click #onlineMode' : function(){
+				Meteor.reconnect();
+				alert('You are now back online');
+		}
 	});
 
 Template.profilePage.events({
@@ -113,11 +134,6 @@ Template.profilePage.events({
 	'click #tablePage' : function(){
 		Router.go('userTable');
 	} 
-
-	// 'click #sendMessage' : function(){
-	// 	// alert('calling email');
-	// 	Meteor.call('sendEmail', 'marc.williams7@gmail.com', 'marc.williams7@gmail.com', 'Test Mail', 'Hey did this work!?');
-	// }
 });
 
 Template.nameSpace.events({
@@ -168,7 +184,7 @@ Template.nameSpace.events({
 		'click #sendMessage' : function(){
 			var user = Users.findOne({_id: this._id});
 			var to = $('#toField').val();
-			var from = user.firstName + "." + user.lastName + "@mailAddress.com"
+			var from = user.firstName + "." + user.lastName + "@meteormail.com"
 			var subject = $('#subjectField').val();
 			var text = $('#messageBox')[0].value;
 			
@@ -185,6 +201,9 @@ Template.nameSpace.events({
 	}
 
 	var updateUser = function(id,fName, lName, accBalance, bio, info){
+		alert("user update?");
+		//needs to be completed
+		Meteor.call('updateUsers');
 	Users.update(id, 
 		{$set: {firstName : fName,
 		 lastName : lName, 
@@ -195,11 +214,23 @@ Template.nameSpace.events({
 	}
 
 	var insertUser = function(fName, lName, accBalance, bio, info) {
+		var mysqlID = genUUID();
+		Meteor.call('mysqlInsert', mysqlID, fName, lName, accounting.unformat(accBalance), bio, info);
 		Users.insert({firstName: fName, 
 			lastName: lName, 
 			accountBalance: accBalance,
 			 userBio: bio,
 			 moreInfo : info
 			});
+	}
+
+	var genUUID = function () {
+    	var d = new Date().getTime();
+    	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        	var r = (d + Math.random()*16)%16 | 0;
+        	d = Math.floor(d/16);
+        	return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+    });
+    return uuid;
 	}
 }
