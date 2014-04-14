@@ -3,21 +3,24 @@ Meteor.publish('users', function() {
 });
 
 var mysql = Meteor.require('mysql');
-var connection = mysql.createConnection({
+
+var db_config = {
 	host	: 'localhost',
 	user 	: 'root',
 	password: '',	
 	port 	: '3306'
-});
+};
 
 
-// Meteor.publish('listUserFiles', function(filter) {
-//     return ContactsFS.find({ complete: filter.completed }, { // publish only complete or only incomplete, depending on client setting
-//         sort:   { handledAt: 1 }, // sort by handledAt time
-//         fields: { _id: 1, filename: 1, handledAt: 1}, // publish only the filename, handledAt, and _id fields
-//         limit:  filter.limit // limit the number of files published, depending on client setting
-//     })
-// });
+startConnect = function(config){
+	var bridge = mysql.createConnection(config);
+	return bridge;
+}
+
+var connection = startConnect(db_config);
+
+
+mysql.createConnection(db_config);
 
 Meteor.startup(function(){
 	Apm.connect('CjwQdohh83iq9dtWc', '2cfdc412-531b-490b-bb13-99befa9ab7fe');
@@ -25,12 +28,12 @@ Meteor.startup(function(){
 		username: 'postmaster@metoermailgun.com',
 		password: 'aliveWithHandz'
 	});
+
 connection.connect(function(err){
 	console.log("---------- MySQL connection established ----------");
 });
 connection.query('create schema if not exists meteor');
 connection.query('use meteor');
-// var createTable = "create table if not exists Users(userID int not null auto_increment, firstName varchar(255), lastName varchar(255), accountBalance decimal, userBio varchar(255), info varchar(255))";
 var createUserTable = "CREATE TABLE IF NOT EXISTS Users(userID varchar(45), firstName VARCHAR(45) NULL, lastName VARCHAR(45) NULL, accountBalance DECIMAL NULL, userBio VARCHAR(45) NULL, info VARCHAR(45) NULL, PRIMARY KEY (userID), UNIQUE INDEX idUsers_UNIQUE (userID ASC))";
 
 connection.query(createUserTable, function(err, result){
@@ -60,10 +63,20 @@ connection.query(selectFromPersons, function(err, results){
 		}
 
 	tableDelete = function(client, fName, lName){
-		// fName = "updatedName";
-		// lName = "002";
 		client.query("DELETE from Users WHERE firstName = + '" + fName + "' AND lastName = '" + lName + "'");
 	}
+
+	dropConnection = function(client){
+		console.log("MySQL connection terminated");
+		client.destroy();
+	}
+
+	reconnection = function(client){
+		client.connect(function(err) {
+			console.log("MySQL connection established");
+		});
+	}
+
 	tableReady = function(client, id, fName, lName, accBalance, bio, info){
 		client.query("INSERT INTO Users (userID, firstName, lastName, accountBalance, userBio, info) VALUES ('" + id + "', '"+ fName + "', '"+ lName + "', '"+ accBalance + "', '"+ bio + "', '" + info + "')",
 			function(err, results){
@@ -85,6 +98,14 @@ connection.query(selectFromPersons, function(err, results){
 			return Users.remove({});
 		} ,
 
+		mySQLDisconnect : function(){
+			dropConnection(connection);
+		} ,
+
+		mySQLConnect : function(){
+			reconnection(connection);
+		} ,
+
 		returnAllUsers : function(){
 			return allUsers(connection);
 		} ,
@@ -100,7 +121,7 @@ connection.query(selectFromPersons, function(err, results){
 		} ,
 
 		updateUsers : function(){
-			console.log("updating Delta");
+			console.log("updating user...");
 			tableUpdate(connection);
 		} ,
 

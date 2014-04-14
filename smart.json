@@ -6,6 +6,6 @@
     "connection-banner": {},
     "mailgun": {},
     "collectionFS": {},
-    "npm": {},
+    "npm": {}
   }
 }

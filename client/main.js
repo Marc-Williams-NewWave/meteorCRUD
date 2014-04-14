@@ -61,7 +61,7 @@ Session.setDefault('updating_user', null);
 
 			$('#firstName').val('');
 			$('#lastName').val('');
-			$('#accountBalance').val('')
+			$('#accountBalance').val('');
 			$('#userBio').val('');
 
 			Session.set('updating_user', null);
@@ -101,11 +101,13 @@ Session.setDefault('updating_user', null);
 
 		'click #offlineMode' : function(){
 			if(confirm('Are you sure you want to disconnect from Meteor server? This will cease live updates')){
-				Meteor.disconnect();
+				Meteor.call('mySQLDisconnect');
 			}
+			Meteor.disconnect();
 		} ,
 
 		'click #onlineMode' : function(){
+				Meteor.call('mySQLConnect');
 				Meteor.reconnect();
 				alert('You are now back online');
 		}
@@ -144,6 +146,7 @@ Template.nameSpace.events({
 	'submit #infoForm' : function(e){a
 		var input = $('#addInfo')[0].value;
 		var user = Users.findOne({_id:this._id});
+		alert("inside subit #infoForm -> " + this._id);
 		updateUser(this._id, user.firstName, user.lastName, user.accountBalance, user.userBio, input);
 		e.preventDefault();
 	}
@@ -203,7 +206,8 @@ Template.nameSpace.events({
 	var updateUser = function(id,fName, lName, accBalance, bio, info){
 		alert("user update?");
 		//needs to be completed
-		Meteor.call('updateUsers');
+		// Meteor.call('updateUsers');
+		alert("inside updateUser -> " + id);
 	Users.update(id, 
 		{$set: {firstName : fName,
 		 lastName : lName, 
@@ -213,24 +217,25 @@ Template.nameSpace.events({
 		}});
 	}
 
-	var insertUser = function(fName, lName, accBalance, bio, info) {
-		var mysqlID = genUUID();
-		Meteor.call('mysqlInsert', mysqlID, fName, lName, accounting.unformat(accBalance), bio, info);
+	var insertUser = function(fName, lName, accBalance, bio, info) {		
 		Users.insert({firstName: fName, 
 			lastName: lName, 
 			accountBalance: accBalance,
 			 userBio: bio,
 			 moreInfo : info
 			});
+			var newguy = latestGuy();
+			var mysqlID = newguy._id;
+			alert("mysqlID is " + mysqlID);
+			// Meteor.call('logUsers', mysqlID, fName, lName, accounting.unformat(accBalance), bio, info);
 	}
 
-	var genUUID = function () {
-    	var d = new Date().getTime();
-    	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        	var r = (d + Math.random()*16)%16 | 0;
-        	d = Math.floor(d/16);
-        	return (c=='x' ? r : (r&0x7|0x8)).toString(16);
-    });
-    return uuid;
+	var latestGuy = function(){
+		var latestUser = Users.find({}, {sort: {_id : -1} , limit: 1}).fetch()[0];
+		alert("latestUser id is " + latestUser._id);
+
+
+		return latestUser;
+		// alert("Latest user is " + latestUser.fName + latestUser.lName + latestUser._id);
 	}
 }
