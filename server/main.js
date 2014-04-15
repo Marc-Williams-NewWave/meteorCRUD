@@ -58,8 +58,13 @@ connection.query(selectFromPersons, function(err, results){
 		console.log("clearing Users table")
 		client.query("DELETE FROM Users");
 	}
-	tableUpdate = function(client){
-		client.query("UPDATE Users SET firstName='updatedName' WHERE firstName='Delta' AND lastName='002' ");
+	tableUpdate = function(client, id, fName, lName, accountBalance, userBio){
+		console.log("updating user in MySQL...");
+
+		// client.query("UPDATE Users SET firstName = + '" + fName + "' AND SET lastName = '" + lName + "' WHERE userID = '" + id + "'");
+
+		client.query('UPDATE Users SET firstName = ? AND lastName = ? WHERE userID = ?', [fName, lName, id]);
+
 		}
 
 	tableDelete = function(client, fName, lName){
@@ -120,9 +125,9 @@ connection.query(selectFromPersons, function(err, results){
 			tableReady(connection, id, fName, lName, accBalance, bio, info);
 		} ,
 
-		updateUsers : function(){
+		updateUsers : function(id, fName, lName, accBalance, bio, info){
 			console.log("updating user...");
-			tableUpdate(connection);
+			tableUpdate(connection, id, fName, lName, accBalance, bio, info);
 		} ,
 
 		sendEmail : function(to, from, subject, text){

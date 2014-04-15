@@ -215,27 +215,25 @@ Template.nameSpace.events({
 		 userBio : bio,
 		 moreInfo : info
 		}});
+	Meteor.call('updateUsers', id, fName, lName, accounting.unformat(accBalance), bio, info);
 	}
 
 	var insertUser = function(fName, lName, accBalance, bio, info) {		
-		Users.insert({firstName: fName, 
+		var mysqlID = Users.insert({firstName: fName, 
 			lastName: lName, 
 			accountBalance: accBalance,
 			 userBio: bio,
 			 moreInfo : info
 			});
-			var newguy = latestGuy();
-			var mysqlID = newguy._id;
-			alert("mysqlID is " + mysqlID);
-			// Meteor.call('logUsers', mysqlID, fName, lName, accounting.unformat(accBalance), bio, info);
+			Meteor.call('logUsers', mysqlID, fName, lName, accounting.unformat(accBalance), bio, info);
 	}
 
-	var latestGuy = function(){
-		var latestUser = Users.find({}, {sort: {_id : -1} , limit: 1}).fetch()[0];
-		alert("latestUser id is " + latestUser._id);
+	// var latestGuy = function(){
+	// 	var latestUser = Users.find({}, {sort: {_id : -1} , limit: 1}).fetch()[0];
+	// 	alert("latestUser id is " + latestUser._id);
 
 
-		return latestUser;
-		// alert("Latest user is " + latestUser.fName + latestUser.lName + latestUser._id);
-	}
+	// 	return latestUser;
+	// 	// alert("Latest user is " + latestUser.fName + latestUser.lName + latestUser._id);
+	// }
 }
