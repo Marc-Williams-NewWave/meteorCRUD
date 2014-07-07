@@ -1,11 +1,11 @@
 {
   "packages": {
-    "iron-router": {},
     "accounting": {},
     "apm": {},
     "connection-banner": {},
     "mailgun": {},
-    "collectionFS": {},
-    "npm": {}
+    "npm": {},
+    "iron-router": {},
+    "amqp": {}
   }
 }

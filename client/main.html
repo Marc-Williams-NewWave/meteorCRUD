@@ -1,13 +1,22 @@
 <head>
-  <title>CRUD OPs</title>
+  <title>CRUD OPs On 0.8.2 w/ Blaze</title>
 </head>
 
+<!-- <body>
+  {{> hello}}
+</body>
+ -->
+
+<!-- <body>
+	{{> home}
+</body>
+ -->
 <template name="home">
 
 
   <h2 class="h2">Spring Data and MongoDB Collaboration</h2>
 	<p>
-		Click <a href="{{ pathFor 'userTable'}}" id="tableLink"> here</a> to try out Person CRUD with MongoDB. You can also click <a href="{{ pathFor 'userTable'}}" id="removeAll">here</a> if you wish to start with a fresh collection.
+		Click <a id="viewTable" href="{{ pathFor 'userTable' }}"> here</a> to try out Person CRUD with MongoDB. You can also click <a href="{{ pathFor 'userTable'}}" id="removeAll">here</a> if you wish to start with a fresh collection.
 	</p>
 </template>
 
@@ -17,7 +26,7 @@
 		<button align="center" id="cleanSlate">Clean Slate</button>
 		<button align="center" id="goHome">Landing Page</button>
 		<button align="center" id="offlineMode">Offline</button>
-		<button align="center" id="onlineMode">Online</button>
+		<button align="center" id="onlineMode">Send Msg Along Queue</button>
 	</div>
 
 	<form  class="form-inline">
@@ -26,7 +35,7 @@
 		<label for="firstName">First Name</label> 
 		<input type=text id="firstName" name="firstName" height="15"> 
 		
-		<label for="lastName">Last Name</label>
+		<label for="lastName">Last Name</label> 
 		<input type="text" id="lastName" name="lastName">		
 		
 		<label for="accountBalance">Account Balance $</label>
@@ -67,13 +76,13 @@
 				{{accountBalance}}
 			</td>
 			<td>
-				<button id="viewUserBio_{{firstName}}" class="viewBioPage">Profile</button>
+				<button id="viewUserBio_{{firstName}}" class="viewBioPage" data-id="{{_id}}">Profile</button>
 			</td>
 			<td>
-				<button id="deleteUser_{{firstName}}" class="deleteUser">Delete</button>
+				<button id="deleteUser_{{firstName}}" class="deleteUser" data-id="{{_id}}">Delete</button>
 			</td>
 			<td>
-				<button id="updateUser_{{firstName}}" class="updateUser">Update</button>
+				<button id="updateUser_{{firstName}}" class="updateUser" data-id="{{_id}}">Update</button>
 			</td>
 		</tr>
 		{{/each }}
